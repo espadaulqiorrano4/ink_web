@@ -21,7 +21,7 @@
     <br>
     <ul>
       <li v-for="movie in movies" :key="movie.movieId">
-        {{ movie.movieId }} - {{ movie.movieTitle }} 
+        <b-link @click="viewMovie(movie.movieId)">{{ movie.movieTitle }}</b-link>
         <b-button variant="outline-primary" @click="editMovie(movie.movieId)">Edit Movie</b-button>
         <b-button variant="outline-primary" @click="deleteMovie(movie.movieId , movie.movieTitle)">Delete Movie</b-button>
       </li>
@@ -79,6 +79,9 @@
       },
       editMovie(id){
         this.$router.push({path:'movie/edit',query:{id:id}})
+      },
+      viewMovie(id){
+        this.$router.push({path:'movie/view',query:{id:id}})
       },
       deleteMovie(id,movieTitle){
         this.$bvModal.msgBoxConfirm(`Please confirm that you want to delete ${movieTitle}`, {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Edit Movie</h1>
+    <h3>Edit Movie</h3>
         <b-form-input v-model="movieId"></b-form-input>
       <b-form-input placeholder="movie name"
        v-model="movieTitle"></b-form-input>
@@ -35,7 +35,7 @@ export default {
     },
     async created(){
       let res = await
-      this.$http.get(`/movie/id/${this.$route.query.id}`)
+      this.$http.get(`/movie/movieId/${this.$route.query.id}`)
       console.log(res.data);
       if(res.data.movie){
         this.movieId = res.data.movie.movieId || ''
