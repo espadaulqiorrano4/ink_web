@@ -7,11 +7,14 @@
           <b-form-input v-model="searchTitle"></b-form-input>
         </b-col>
         <b-col>
-          <b-form-select
-            :options="rateList"
-            v-model="rate"
-            signle-line
-            label="Filter"></b-form-select>
+          <!-- <ul>
+            <li v-for="rate in rateList" :key="rate.rateId">
+              {{rate.rateName}}
+            </li>
+          </ul> -->
+          <b-form-select v-model="rate" signle-line label="Filter">
+            <b-form-select-option v-for="rate in rateList" :key="rate.rateId" :value="rate.rateId">{{rate.rateName}}</b-form-select-option>
+          </b-form-select>
         </b-col>
         <b-col>
           <b-button variant="outline-primary" @click="searchMovie(rate,searchTitle)">Search Movie</b-button>
@@ -37,11 +40,7 @@
         movies: [],
         searchTitle:'',
         rate:'',
-        rateList: [
-            { value: '1', text: 'PG' },
-            { value: '2', text: 'PG-13' },
-            { value: '3', text: 'R' },
-        ]
+        rateList: [],
       }
     },
     computed: {
@@ -64,11 +63,15 @@
         // this.movies = res.data.movie
         if(this.$route.query.movieTitle !=undefined || this.$route.query.rateId !=undefined){
           let res = await this.$http.get(`/movie?movieTitle=${this.$route.query.movieTitle}&&rateId=${this.$route.query.rateId}`)
+          let ress = await this.$http.get('/movie/rate')
           console.log('have value' +this.$route.query.movieTitle)
+          this.rateList = ress.data.rate
           this.movies = res.data.movie
         }else{
           let res = await this.$http.get('/movie')
+          let ress = await this.$http.get('/movie/rate')
           this.movies = res.data.movie
+          this.rateList = ress.data.rate
         }
         console.log(res.data)
         
