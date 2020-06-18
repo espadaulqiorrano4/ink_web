@@ -73,7 +73,8 @@
           this.movies = res.data.movie
           this.rateList = ress.data.rate
         }
-        console.log(res.data)
+        //get last Id
+        console.log("this last Id :",this.movies[this.movies.length-1].movieId)
         
         
       },

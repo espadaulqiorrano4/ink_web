@@ -14,6 +14,21 @@
        <b-form-input placeholder="rateId"
        v-model="rateId"></b-form-input>
 
+       <hr>
+
+    <h3>Genre</h3>
+    <b-form-group label="Insert genres">
+      <b-form-checkbox
+        v-for="optionGenre in optionGenres"
+        v-model="selectedGenres"
+        :key="optionGenre.genresId"
+        :value={genresId:optionGenre.genresId}
+      >
+        {{ optionGenre.genresTitle }}
+      </b-form-checkbox>
+    </b-form-group>
+        {{selectedGenres}}
+
       <b-button variant="outline-primary" @click="add()">Add</b-button>
       <b-button variant="outline-primary" to="/movie">Back</b-button>
    </div>
@@ -23,15 +38,25 @@
 export default {
     data() {
         return {
+            movieId:'',
             movieTitle: '',
             moviePlot: '',
             movieRuntime: '',
             movieReleaseDate: '',
             movieIncome: '',
             rateId: '',
+            optionGenres:[],
+            selectedGenres:[],
+            i:0,
+            movieList:[],
         }
     },
     
+    async created() {
+      console.log('created add')
+      let res = await this.$http.get('/movie_genres')
+      this.optionGenres = res.data.genres
+    },
     methods: {
         async add() {
            let res = await this.$http.post('/movie/new', {
@@ -46,6 +71,14 @@ export default {
                 // TODO: Show error
             } else {
                 // TODO: Show message ok
+                let getlast = await this.$http.get('/movie')
+                this.movieList = getlast.data.movie
+                for(this.i=0;this.i<this.selectedGenres.length;this.i++){
+                    let ress = await this.$http.post('/movie_genres/mgenres/new/',{
+                        movieId:this.movieList[this.movieList.length-1].movieId,
+                        genresId:this.selectedGenres[this.i].genresId
+                    })
+                }
                 this.$router.push({path:'/movie'})
             }
         },

@@ -13,9 +13,23 @@
        v-model="movieIncome"></b-form-input>
        <b-form-input placeholder="rateId"
        v-model="rateId"></b-form-input>
-
-      <b-button variant="outline-primary" @click="save()">Save</b-button>
-      <b-button variant="outline-primary" to="/movie">Back</b-button>
+    <div v-if="selectedGenres">
+        <h3>Genre</h3>
+        <b-form-group label="Insert genres">
+        <b-form-checkbox
+            v-for="optionGenre in optionGenres"
+            v-model="selectedGenres"
+            :key="optionGenre.genresId"
+            :value={genresId:optionGenre.genresId}
+        >
+            {{ optionGenre.genresTitle }}
+        </b-form-checkbox>
+        </b-form-group>
+            {{selectedGenres}}
+        <b-button variant="outline-primary" @click="save()">Save</b-button>
+        <b-button variant="outline-primary" to="/movie">Back</b-button>
+    </div>
+        
    </div>
 </template>
 <script>
@@ -31,6 +45,11 @@ export default {
             movieReleaseDate: '',
             movieIncome: '',
             rateId: '',
+            optionGenres:[],
+            selectedGenres:[],
+            i:0,
+            movieList:[],
+            genres:[]
         }
     },
     async created(){
@@ -46,6 +65,12 @@ export default {
         this.movieIncome = res.data.movie.movieIncome || ''
         this.rateId = res.data.movie.rateId || ''
       }
+      //get data form movie_genres
+      let optionGenre = await this.$http.get('/movie_genres')
+      this.optionGenres = optionGenre.data.genres
+
+      let selectedGenre = await this.$http.get(`movie_genres/genres/${this.$route.query.id}`)
+      this.selectedGenres = selectedGenre.data.movie_genre
     },
     methods: {
         async save() {
@@ -61,6 +86,13 @@ export default {
             if(!res.data.ok){
                 // TODO: Show error
             } else {
+                this.$http.delete(`/movie_genres/id/${this.$route.query.id}`)
+                for(this.i=0;this.i<this.selectedGenres.length;this.i++){
+                    let ress = await this.$http.post('/movie_genres/mgenres/new/',{
+                        movieId:this.movieId,
+                        genresId:this.selectedGenres[this.i].genresId
+                    })
+                }
                 // TODO: Show message ok
                 this.$router.push({path:'/movie'})
             }
