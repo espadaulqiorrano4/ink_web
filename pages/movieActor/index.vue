@@ -2,7 +2,7 @@
   <div class="main">
     <ul>
       <li v-for="actor in actors" :key="actor.actorId">
-        <p>{{actor.actorFirstname}} {{actor.actorLastname}}</p>
+        <p>{{actor.actorName}}</p>
       </li>
     </ul>
   </div>

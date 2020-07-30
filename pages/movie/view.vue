@@ -22,7 +22,7 @@
     <h4>Director</h4>
     <ul>
       <li v-for="movie_director in movie_directors" :key="movie_director.director_id">
-        <p>{{movie_director.directorFirstname}} {{movie_director.directorLastname}}</p>
+        <p>{{movie_director.directorName}}</p>
       </li>
     </ul>
 
@@ -30,7 +30,7 @@
     <h4>Writer</h4>
     <ul>
       <li v-for="movie_writer in movie_writers" :key="movie_writer.writers_id">
-        <p>{{movie_writer.writerFirstname}} {{movie_writer.writerLastname}}</p>
+        <p>{{movie_writer.writerName}}</p>
       </li>
     </ul>
 
@@ -39,7 +39,7 @@
     <h4>Production</h4>
     <ul>
       <li v-for="movie_production in movie_productions" :key="movie_production.pco_id">
-        <p>{{movie_production.pcoName}}</p>
+        <p>{{movie_production.pcoTitle}}</p>
       </li>
     </ul>
 
@@ -48,7 +48,15 @@
     <h4>Actor</h4>
     <ul>
       <li v-for="actor in actors" :key="actor.actorId">
-        <p>{{actor.actorFirstname}} {{actor.actorLastname}} Role: {{actor.actorRole}}</p>
+        <p>{{actor.actorName}} Role: {{actor.movieActorRole}}</p>
+      </li>
+    </ul>
+
+    <hr>
+    <h4>Also like</h4>
+    <ul>
+      <li v-for="movie_like in movie_likes" :key="movie_like.movieId">
+        <p v-if="movie_like.movieId == movie_like.movieId">{{movie_like.movieTitle}}</p>
       </li>
     </ul>
 
@@ -74,6 +82,7 @@ export default {
             movie_productions:[],
             movie_directors:[],
             movie_writers:[],
+            movie_likes:[]
         }
     },
     async created(){
@@ -97,6 +106,7 @@ export default {
       this.getProduction()
       this.getDirector()
       this.getWriter() 
+      this.getmovieLike()
     },
     methods: {
       async getActor() {
@@ -119,6 +129,11 @@ export default {
         let res = await this.$http.get(`/movie_writer/writer/${this.$route.query.id}`)
         this.movie_writers = res.data.movie_writer
       },
+      async getmovieLike(){
+        let res = await this.$http.get(`/movie_genres/movielike`)
+        console.log('ml :',this.movie_genres[0])
+        this.movie_likes = res.data.movie_like
+      }
         
     }
 }
