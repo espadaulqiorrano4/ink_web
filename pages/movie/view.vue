@@ -54,11 +54,15 @@
 
     <hr>
     <h4>Also like</h4>
-    <ul>
-      <li v-for="movie_like in movie_likes" :key="movie_like.movieId">
-        <p v-if="movie_like.movieId == movie_like.movieId">{{movie_like.movieTitle}}</p>
-      </li>
-    </ul>
+    <div>
+      <div v-for="movie_like in movie_likes" :key="movie_like.movieId">
+        <div v-if="movieId !== movie_like.movieId">
+          <b-link @click="goview(movie_like.movieId)">
+            {{movie_like.movieTitle}}
+          </b-link>
+        </div>
+      </div>
+    </div>
 
     <b-button variant="outline-primary" to="/movie">Back</b-button>
    </div>
@@ -106,7 +110,6 @@ export default {
       this.getProduction()
       this.getDirector()
       this.getWriter() 
-      this.getmovieLike()
     },
     methods: {
       async getActor() {
@@ -116,6 +119,10 @@ export default {
       async getGenres() {
         let res = await this.$http.get(`/movie_genres/mgenres/${this.$route.query.id}`)
         this.movie_genres = res.data.movie_genre
+        console.log('movie genres :', this.movie_genres[0].genresId)
+        let ress = await this.$http.get(`/movie_genres/movielike/${this.movie_genres[0].genresId}`)
+        this.movie_likes = ress.data.movie_like
+        console.log('movie like :', this.movie_likes)
       },
       async getProduction() {
         let res = await this.$http.get(`/movie_production/production/${this.$route.query.id}`)
@@ -129,10 +136,9 @@ export default {
         let res = await this.$http.get(`/movie_writer/writer/${this.$route.query.id}`)
         this.movie_writers = res.data.movie_writer
       },
-      async getmovieLike(){
-        let res = await this.$http.get(`/movie_genres/movielike`)
-        console.log('ml :',this.movie_genres[0])
-        this.movie_likes = res.data.movie_like
+      goview(id){
+        this.$router.push({path:'/movie/view',query:{id:id}}).then(value=>{if(value){location.reload()}})
+        
       }
         
     }
