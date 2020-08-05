@@ -88,11 +88,27 @@ export default {
             } else {
                 this.$http.delete(`/movie_genres/id/${this.$route.query.id}`)
                 for(this.i=0;this.i<this.selectedGenres.length;this.i++){
-                    let ress = await this.$http.post('/movie_genres/mgenres/new/',{
+                    try {
+                        await this.$http.post('/movie_genres/mgenres/new/',{
                         movieId:this.movieId,
                         genresId:this.selectedGenres[this.i].genresId
                     })
+                    } catch (error) {
+                        console.log('error something')
+                    }
                 }
+                // do {
+                //     this.$http.post('/movie_genres/mgenres/new/',{
+                //         movieId:this.movieId,
+                //         genresId:this.selectedGenres[this.i].genresId
+                //     }).then((value)=>{
+                //         if(value){
+                            
+                //         }
+                //     })
+                //     console.log('loop i: ',this.i,' gId: ',this.selectedGenres[this.i].genresId)
+                //     this.i++
+                // } while (this.i<this.selectedGenres.length);
                 // TODO: Show message ok
                 this.$router.push({path:'/movie'})
             }
