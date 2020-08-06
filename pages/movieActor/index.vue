@@ -28,7 +28,6 @@
         let res = await this.$http.get('/movie_actor')
         this.actors = res.data.actor
         console.log(res.data)
-        
       }
     }
   }

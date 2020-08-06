@@ -25,11 +25,29 @@
             {{ optionGenre.genresTitle }}
         </b-form-checkbox>
         </b-form-group>
-            {{selectedGenres}}
         <b-button variant="outline-primary" @click="save()">Save</b-button>
         <b-button variant="outline-primary" to="/movie">Back</b-button>
     </div>
-        
+        <div class="actor">
+            <h3>Actor</h3>
+                <ul>
+                <li v-for="actor in actors" :key="actor.actorId">
+                    <p v-if="check !== actor.actorId">
+                    {{actor.actorName}} Role: {{actor.movieActorRole}}
+                    <b-button variant="outline-primary" @click="editRole(actor.actorId)">edit role</b-button>
+                    <b-button variant="outline-primary" @click="deleteActor(actor.actorId , actor.movieTitle, actor.actorName)">delete actor</b-button>
+                    </p>
+
+                    <p v-else>
+                    {{actor.actorName}} 
+                    Role: <b-form-input v-model="actor.movieActorRole" placeholder="Enter role"></b-form-input>
+                    <b-button variant="outline-primary" @click="saveRole(actor.actorId,actor.movieId,actor.movieActorRole)">save role</b-button>
+                    <b-button variant="outline-primary" @click="cancel()">cancel</b-button>
+                    </p>
+                </li>
+                </ul>
+            <b-button variant="outline-primary" @click="addActor(movieId)">Add actor</b-button>
+        </div>
    </div>
 </template>
 <script>
@@ -49,7 +67,10 @@ export default {
             selectedGenres:[],
             i:0,
             movieList:[],
-            genres:[]
+            genres:[],
+            actors: [],
+            check: 0,
+            x:0,
         }
     },
     async created(){
@@ -71,6 +92,8 @@ export default {
 
       let selectedGenre = await this.$http.get(`movie_genres/genres/${this.$route.query.id}`)
       this.selectedGenres = selectedGenre.data.movie_genre
+
+      this.getActor()
     },
     methods: {
         async save() {
@@ -112,7 +135,68 @@ export default {
                 // TODO: Show message ok
                 this.$router.push({path:'/movie'})
             }
-        }
+        },
+        async getActor() {
+        let res = await this.$http.get(`/movie_actor/actorId/${this.$route.query.id}`)
+        this.actors = res.data.actor
+        console.log(res.data)
+        },
+
+        deleteActor(id,movieTitle,actorname){
+        this.$bvModal.msgBoxConfirm(`Please confirm that you want to delete ${actorname} from ${movieTitle}`, {
+          title: 'Please Confirm',
+          buttonSize: 'sm',
+          okVariant: 'danger',
+          okTitle: 'YES',
+          cancelTitle: 'NO',
+          footerClass: 'p-2',
+          hideHeaderClose: false,
+          centered: true
+        })
+          .then(value => {
+            if(value){
+              this.$http.delete(`/movie_actor/id/${id}`)
+              location.reload()
+            }else{
+              
+            }
+            
+          })
+          .catch(err => {
+            // An error occurred
+          })
+          },
+
+          editRole(id){
+              this.check = id
+          },
+          cancel(){
+              this.check = false
+          },
+          saveRole(actorId,movieId,movieActorRole){
+              this.$http.post(`/movie_actor/actorRole`,{
+                movieId: this.$route.query.id,
+                mId: movieId,
+                aId: actorId,
+                movieActorRole: movieActorRole
+            }).then(value =>{
+                if(value){
+                    this.check = false
+                }
+            })
+          },
+
+          addActor(id){
+              this.$router.push({path:'/movie/addMovieActor',query:{id:id}})
+          }
+
+
+
+
+
+
+
+
     }
 }
 </script>
