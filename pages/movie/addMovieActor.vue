@@ -1,7 +1,7 @@
 <template>
   <div class="main">
       <div class="Search">
-        <p>Search Movie</p>
+        <p>Search Actor</p>
         <b-row>
             <b-col>
             <b-form-input v-model="searchActor"></b-form-input>
@@ -18,6 +18,7 @@
                 <p v-if="check !== actor.actorId">
                     {{actor.actorName}}
                     <b-button variant="outline-primary" @click="add(actor.actorId)">add</b-button>
+                    <b-button variant="outline-primary" @click="deleteActor(actor.actorId , actor.movieTitle, actor.actorName)">delete actor</b-button>
                 </p>
 
                 <p v-else>
@@ -35,6 +36,7 @@
 
 <script>
   export default {
+    middleware:'auth',
     data() {
       return {
         actors: [],

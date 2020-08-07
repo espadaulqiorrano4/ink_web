@@ -71,6 +71,7 @@
 // http://localhost:7000/movie/view?id=1
 // http://localhost:7000/movie/view/1
 export default {
+  middleware:'auth',
     data() {
         return {
             movieId:'',

@@ -54,6 +54,7 @@
 // http://localhost:7000/movie/edit?id=1
 // http://localhost:7000/movie/edit/1
 export default {
+    middleware:'auth',
     data() {
         return {
             movieId:'',

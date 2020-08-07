@@ -55,6 +55,7 @@ export default {
             local: {
                 endpoints: {
                     login: { url: 'http://localhost:7000/api/login/login', method: 'post', propertyName: 'token' },
+                    logout: { url: 'http://localhost:7000/api/login/logout', method: 'post' },
                     user: { url: 'http://localhost:7000/api/login/user', method: 'get', propertyName: 'user' },
                 },
                 tokenName: 'authorization',
