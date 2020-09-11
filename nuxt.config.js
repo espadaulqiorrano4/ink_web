@@ -29,7 +29,7 @@ export default {
         '~/plugins/axios', //-- add plugins axios
     ],
     proxy: {
-        '/api': 'http://127.0.0.1:7000', //-- ตั้งค่า map proxy url api server
+        '/api': 'http://127.0.0.1:8000', //-- ตั้งค่า map proxy url api server
         ws: true
     },
     /*
@@ -45,7 +45,7 @@ export default {
         // Doc: https://axios.nuxtjs.org/usage
         '@nuxtjs/axios',
         '@nuxtjs/proxy',
-        '@nuxtjs/auth' //-- add modules proxy 
+        '@nuxtjs/auth' //-- add modules proxy
     ],
     auth: {
         redirect: {

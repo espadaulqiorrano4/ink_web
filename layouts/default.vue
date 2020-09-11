@@ -1,14 +1,15 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="dark" variant="info">
-    <b-navbar-brand href="/">Movie</b-navbar-brand>
+    <b-navbar-brand href="/">Ink</b-navbar-brand>
 
     <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-        <b-nav-item href="/movie">admin mode</b-nav-item>
-        <b-nav-item href="/movieActor">admin mode actor</b-nav-item>
+        <b-nav-item href="/customers">add customer</b-nav-item>
+        <b-nav-item href="/inks">add inks</b-nav-item>
+        <b-nav-item href="/seller">add seller</b-nav-item>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->

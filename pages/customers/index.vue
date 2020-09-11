@@ -1,22 +1,12 @@
 <template>
   <div>
-    page index
+    page add customer
   </div>
 </template>
 
 <script>
 export default {
-  components: {
 
-  },
-  data(){
-    return{
-
-    }
-  },
-  methods:{
-
-    }
 }
 </script>
 
