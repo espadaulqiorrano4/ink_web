@@ -2,12 +2,29 @@
   <div class="main">
     <ul>
       <li v-for="ink in inks" :key="ink.id">
-        <b-link @click="viewMovie(ink.name)">{{ ink.price }} {{ink.name}}</b-link>
-        <b-button variant="outline-primary" @click="editMovie(movie.movieId)">Edit ink</b-button>
-        <b-button variant="outline-primary" @click="deleteMovie(movie.movieId , movie.movieTitle)">Delete ink</b-button>
+        <p v-if="check !== ink.id">
+          {{ink.name}} price:{{ ink.price }}
+          <b-button variant="outline-primary" @click="edit(ink.id)">Edit ink</b-button>
+          <b-button variant="outline-primary" @click="deleteInk(ink.id , ink.name)">Delete ink</b-button>
+        </p>
+        <p v-else>
+          name:<b-form-input v-model="ink.name" placeholder="name"></b-form-input>
+          price:<b-form-input v-model="ink.price" placeholder="price"></b-form-input>
+          <b-button variant="outline-primary" @click="save(ink.id,ink.name,ink.price)">save</b-button>
+          <b-button variant="outline-primary" @click="cancelEdit()">cancel</b-button>
+        </p>
+
       </li>
     </ul>
-    <b-button variant="outline-primary" @click="addMovie()">Add ink</b-button>
+    <b-button variant="outline-primary" @click="addInk()">Add ink</b-button>
+    <div v-if="checkAddInk !== false">
+      <b-form-input placeholder="ink name"
+       v-model="inkName"></b-form-input>
+       <b-form-input placeholder="price"
+       v-model="price"></b-form-input>
+       <b-button variant="outline-primary" @click="add(inkName,price)">add</b-button>
+       <b-button variant="outline-primary" @click="cancel()">cancel</b-button>
+    </div>
   </div>
 </template>
 
@@ -16,6 +33,10 @@
     data() {
       return {
         inks: [],
+        inkName:"",
+        price:0,
+        check:0,
+        checkAddInk:false,
       }
     },
     async created() {
@@ -29,17 +50,11 @@
           this.inks = res.data.data
           console.log("data" ,this.inks)
       },
-      addMovie(){
-        this.$router.push({path:'movie/add'})
+      addInk(){
+        this.checkAddInk=1
       },
-      editMovie(id){
-        this.$router.push({path:'movie/edit',query:{id:id}})
-      },
-      viewMovie(id){
-        this.$router.push({path:'movie/view',query:{id:id}})
-      },
-      deleteMovie(id,movieTitle){
-        this.$bvModal.msgBoxConfirm(`Please confirm that you want to delete ${movieTitle}`, {
+      deleteInk(id,name){
+        this.$bvModal.msgBoxConfirm(`Please confirm that you want to delete ${name}`, {
           title: 'Please Confirm',
           buttonSize: 'sm',
           okVariant: 'danger',
@@ -51,8 +66,8 @@
         })
           .then(value => {
             if(value){
-              this.$http.delete(`/movie/id/${id}`)
-              location.reload()
+              this.$http.delete(`inks/${id}/delete`)
+              this.getInks()
             }else{
 
             }
@@ -61,16 +76,36 @@
           .catch(err => {
             // An error occurred
           })
-        // this.$http.delete(`/movie/id/${id}`)
-        // location.reload()
       },
-      async searchMovie(rate,searchTitle){
-        ///api/movie?movieTitle=ri&&rateId=2
-        this.$router.push({path:`/movie?movieTitle=${searchTitle}&&rateId=${rate}`})
-        let res = await this.$http.get(`/movie?movieTitle=${searchTitle}&&rateId=${rate}`)
-        console.log(res.data)
-        this.movies = res.data.movie
-      }
+      async add(name,price){
+        console.log('name:',name," price: ",price)
+        let res = await this.$http.post('/inks/create', {
+                name: name,
+                price: price,
+            })
+        this.checkAddInk = false
+        this.getInks()
+      },
+      cancel(){
+        this.checkAddInk = false
+      },
+      cancelEdit(){
+        this.check = 0
+      },
+      edit(id){
+          this.check = id
+      },
+      save(id,name,price){
+        this.$http.put(`/inks/update/${id}`,{
+                id: `${id}`,
+                name: name,
+                price:price
+            }).then(value =>{
+                if(value){
+                    this.check = false
+                }
+            })
+      },
     }
   }
 </script>
