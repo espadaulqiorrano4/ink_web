@@ -3,14 +3,14 @@
     <ul>
       <li v-for="ink in inks" :key="ink.id">
         <p v-if="check !== ink.id">
-          {{ink.name}} price:{{ ink.price }}
+          {{ink.ink_name}} price:{{ ink.ink_price }}
           <b-button variant="outline-primary" @click="edit(ink.id)">Edit ink</b-button>
-          <b-button variant="outline-primary" @click="deleteInk(ink.id , ink.name)">Delete ink</b-button>
+          <b-button variant="outline-primary" @click="deleteInk(ink.id , ink.ink_name)">Delete ink</b-button>
         </p>
         <p v-else>
-          name:<b-form-input v-model="ink.name" placeholder="name"></b-form-input>
-          price:<b-form-input v-model="ink.price" placeholder="price"></b-form-input>
-          <b-button variant="outline-primary" @click="save(ink.id,ink.name,ink.price)">save</b-button>
+          name:<b-form-input v-model="ink.ink_name" placeholder="name"></b-form-input>
+          price:<b-form-input v-model="ink.ink_price" placeholder="price"></b-form-input>
+          <b-button variant="outline-primary" @click="save(ink.id,ink.ink_name,ink.ink_price)">save</b-button>
           <b-button variant="outline-primary" @click="cancelEdit()">cancel</b-button>
         </p>
 
@@ -34,7 +34,7 @@
       return {
         inks: [],
         inkName:"",
-        price:0,
+        price:'',
         check:0,
         checkAddInk:false,
       }
@@ -85,6 +85,8 @@
             })
         this.checkAddInk = false
         this.getInks()
+        this.inkName=""
+        this.price=''
       },
       cancel(){
         this.checkAddInk = false
@@ -98,8 +100,8 @@
       save(id,name,price){
         this.$http.put(`/inks/update/${id}`,{
                 id: `${id}`,
-                name: name,
-                price:price
+                ink_name: name,
+                ink_price:price
             }).then(value =>{
                 if(value){
                     this.check = false
