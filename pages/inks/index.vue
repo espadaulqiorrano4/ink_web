@@ -1,16 +1,16 @@
 <template>
   <div class="main">
     <ul>
-      <li v-for="ink in inks" :key="ink.id">
-        <p v-if="check !== ink.id">
+      <li v-for="ink in inks" :key="ink.ink_id">
+        <p v-if="check !== ink.ink_id">
           {{ink.ink_name}} price:{{ ink.ink_price }}
-          <b-button variant="outline-primary" @click="edit(ink.id)">Edit ink</b-button>
-          <b-button variant="outline-primary" @click="deleteInk(ink.id , ink.ink_name)">Delete ink</b-button>
+          <b-button variant="outline-primary" @click="edit(ink.ink_id)">Edit ink</b-button>
+          <b-button variant="outline-primary" @click="deleteInk(ink.ink_id , ink.ink_name)">Delete ink</b-button>
         </p>
         <p v-else>
           name:<b-form-input v-model="ink.ink_name" placeholder="name"></b-form-input>
           price:<b-form-input v-model="ink.ink_price" placeholder="price"></b-form-input>
-          <b-button variant="outline-primary" @click="save(ink.id,ink.ink_name,ink.ink_price)">save</b-button>
+          <b-button variant="outline-primary" @click="save(ink.ink_id,ink.ink_name,ink.ink_price)">save</b-button>
           <b-button variant="outline-primary" @click="cancelEdit()">cancel</b-button>
         </p>
 
@@ -99,7 +99,7 @@
       },
       save(id,name,price){
         this.$http.put(`/inks/update/${id}`,{
-                id: `${id}`,
+                ink_id: `${id}`,
                 ink_name: name,
                 ink_price:price
             }).then(value =>{

@@ -1,17 +1,17 @@
 <template>
   <div class="main">
     <ul>
-      <li v-for="customer in customers" :key="customer.id">
-        <p v-if="check !== customer.id">
+      <li v-for="customer in customers" :key="customer.customer_id">
+        <p v-if="check !== customer.customer_id">
           {{customer.customer_name}} phone:{{customer.customer_phone}} address:{{customer.customer_address}}
-          <b-button variant="outline-primary" @click="edit(customer.id)">Edit ink</b-button>
-          <b-button variant="outline-primary" @click="deletecustomers(customer.id , customer.customer_name)">Delete customer</b-button>
+          <b-button variant="outline-primary" @click="edit(customer.customer_id)">Edit ink</b-button>
+          <b-button variant="outline-primary" @click="deletecustomers(customer.customer_id , customer.customer_name)">Delete customer</b-button>
         </p>
         <p v-else>
           name:<b-form-input v-model="customer.customer_name" placeholder="name"></b-form-input>
           phone:<b-form-input v-model="customer.customer_phone" placeholder="phone"></b-form-input>
           email:<b-form-input v-model="customer.customer_address" placeholder="email"></b-form-input>
-          <b-button variant="outline-primary" @click="save(customer.id,customer.customer_name,customer.customer_phone,customer.customer_address)">save</b-button>
+          <b-button variant="outline-primary" @click="save(customer.customer_id,customer.customer_name,customer.customer_phone,customer.customer_address)">save</b-button>
           <b-button variant="outline-primary" @click="cancelEdit()">cancel</b-button>
         </p>
 
@@ -98,7 +98,7 @@
       },
       save(id,name,phone,address){
         this.$http.put(`/customers/update/${id}`,{
-                id: `${id}`,
+                customer_id: `${id}`,
                 customer_name:name,
                 customer_phone:phone,
                 customer_address:address,

@@ -1,18 +1,18 @@
 <template>
   <div class="main">
     <ul>
-      <li v-for="seller in sellers" :key="seller.id">
-        <p v-if="check !== seller.id">
+      <li v-for="seller in sellers" :key="seller.seller_id">
+        <p v-if="check !== seller.seller_id">
           {{seller.seller_name}} nick name:{{ seller.seller_nick_name }} phone:{{seller.seller_phone}} email:{{seller.seller_email}}
-          <b-button variant="outline-primary" @click="edit(seller.id)">Edit ink</b-button>
-          <b-button variant="outline-primary" @click="deletesellers(seller.id , seller.seller_name)">Delete ink</b-button>
+          <b-button variant="outline-primary" @click="edit(seller.seller_id)">Edit ink</b-button>
+          <b-button variant="outline-primary" @click="deletesellers(seller.seller_id , seller.seller_name)">Delete ink</b-button>
         </p>
         <p v-else>
           name:<b-form-input v-model="seller.seller_name" placeholder="name"></b-form-input>
           nick name:<b-form-input v-model="seller.seller_nick_name" placeholder="nick name"></b-form-input>
           phone:<b-form-input v-model="seller.seller_phone" placeholder="phone"></b-form-input>
           email:<b-form-input v-model="seller.seller_email" placeholder="email"></b-form-input>
-          <b-button variant="outline-primary" @click="save(seller.id,seller.seller_name,seller.seller_nick_name,seller.seller_phone,seller.seller_email)">save</b-button>
+          <b-button variant="outline-primary" @click="save(seller.seller_id,seller.seller_name,seller.seller_nick_name,seller.seller_phone,seller.seller_email)">save</b-button>
           <b-button variant="outline-primary" @click="cancelEdit()">cancel</b-button>
         </p>
 
@@ -102,7 +102,7 @@
       },
       save(id,name,nick_name,phone,email){
         this.$http.put(`/sellers/update/${id}`,{
-                id: `${id}`,
+                seller_id: `${id}`,
                 seller_name:name,
                 seller_nick_name:nick_name,
                 seller_phone:phone,
