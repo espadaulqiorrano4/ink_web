@@ -15,13 +15,22 @@
 
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
-        <b-nav-item-dropdown right>
+        <b-nav-item-dropdown right v-if="$auth.user">
           <!-- Using 'button-content' slot -->
           <template v-slot:button-content>
-            <em>User</em>
+            <em>{{$auth.user.name}}</em>
           </template>
-          <b-dropdown-item href="#">Profile</b-dropdown-item>
-          <b-dropdown-item @click="handleOutClicked">Sign Out</b-dropdown-item>
+          <b-dropdown-item href="/auth/me">Profile</b-dropdown-item>
+          <b-dropdown-item @click="handleOutClicked">logout</b-dropdown-item>
+        </b-nav-item-dropdown>
+
+        <b-nav-item-dropdown right v-else>
+          <!-- Using 'button-content' slot -->
+          <template v-slot:button-content>
+            <em>user</em>
+          </template>
+          <b-dropdown-item href="/auth/login">login</b-dropdown-item>
+          <b-dropdown-item href="/auth/register">register</b-dropdown-item>
         </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-collapse>

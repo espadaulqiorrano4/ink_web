@@ -87,6 +87,7 @@
                 nick_name:nick_name,
                 phone:phone,
                 email:email,
+                user_id:this.$auth.user.id
             })
         this.checkAdd = false
         this.getsellers()

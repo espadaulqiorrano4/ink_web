@@ -51,11 +51,12 @@
       }
     },
     async created() {
+
       console.log('created')
       this.getMovie()
         this.rate = this.$route.query.rateId || ''
         this.searchTitle = this.$route.query.movieTitle || ''
-      
+
     },
     methods: {
       async getMovie() {
@@ -76,8 +77,8 @@
         }
         //get last Id
         console.log("this last Id :",this.movies[this.movies.length-1].movieId)
-        
-        
+
+
       },
       addMovie(){
         this.$router.push({path:'movie/add'})
@@ -104,9 +105,9 @@
               this.$http.delete(`/movie/id/${id}`)
               location.reload()
             }else{
-              
+
             }
-            
+
           })
           .catch(err => {
             // An error occurred

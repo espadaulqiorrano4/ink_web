@@ -18,6 +18,12 @@ export default {
      ** Customize the progress-bar color
      */
     loading: { color: '#fff' },
+
+    router: {
+        middleware: [
+            'clearValidationErrors'
+        ]
+    },
     /*
      ** Global CSS
      */
@@ -26,7 +32,10 @@ export default {
      ** Plugins to load before mounting the App
      */
     plugins: [
+        '~/plugins/mixins/validation',
+        '~/plugins/mixins/user',
         '~/plugins/axios', //-- add plugins axios
+
     ],
     proxy: {
         '/api': 'http://127.0.0.1:8000', //-- ตั้งค่า map proxy url api server
@@ -48,18 +57,21 @@ export default {
         '@nuxtjs/auth' //-- add modules proxy
     ],
     auth: {
+
         redirect: {
-            login: '/login'
+            login: '/auth/login',
+
+
         },
         strategies: {
             local: {
                 endpoints: {
-                    login: { url: 'http://localhost:7000/api/login/login', method: 'post', propertyName: 'token' },
-                    logout: { url: 'http://localhost:7000/api/login/logout', method: 'post' },
-                    user: { url: 'http://localhost:7000/api/login/user', method: 'get', propertyName: 'user' },
+                    login: { url: 'auth/login', method: 'post', propertyName: 'token' },
+                    logout: { url: 'auth/logout', method: 'post' },
+                    user: { url: 'auth/user-profile', method: 'get', propertyName: 'user' },
                 },
-                tokenName: 'authorization',
-                tokenType: false
+
+
 
             }
         }
@@ -68,7 +80,9 @@ export default {
      ** Axios module configuration
      ** See https://axios.nuxtjs.org/options
      */
-    axios: {},
+    axios: {
+        baseURL: 'http://127.0.0.1:8000/api'
+    },
     /*
      ** Build configuration
      */
