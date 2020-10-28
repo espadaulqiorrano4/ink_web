@@ -50,6 +50,9 @@
           let res = await this.$http.get('/inks')
           this.inks = res.data.data
           console.log("data" ,this.inks)
+                    console.log("data" ,this.inks)
+
+
       },
       addInk(){
         this.checkAddInk=1
